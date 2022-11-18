@@ -1,0 +1,141 @@
+{
+ "actions": [],
+ "allow_copy": 1,
+ "allow_rename": 1,
+ "creation": "2022-11-13 14:59:36.445863",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "select_doctype",
+  "column_break_2",
+  "serial_no",
+  "column_break_4",
+  "item_code",
+  "column_break_6",
+  "te",
+  "s_status",
+  "warehouse",
+  "column_break_8",
+  "batch_no",
+  "column_break_10",
+  "check",
+  "fetch_record",
+  "section_break_10",
+  "report_record_details"
+ ],
+ "fields": [
+  {
+   "fieldname": "serial_no",
+   "fieldtype": "Data",
+   "label": "Serial No"
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": "Item Code",
+   "options": "Item"
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "batch_no",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Batch No",
+   "options": "Batch"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break",
+   "label": "Report Record"
+  },
+  {
+   "default": "Return",
+   "depends_on": "eval:doc.select_doctype == 'Purchase Invoice'",
+   "fieldname": "te",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Return"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "report_record_details",
+   "fieldtype": "Table",
+   "label": "Report Record Details",
+   "options": "Report Record"
+  },
+  {
+   "fieldname": "select_doctype",
+   "fieldtype": "Select",
+   "label": "Select Doctype",
+   "options": "\nSales Invoice\nPurchase Invoice"
+  },
+  {
+   "fieldname": "fetch_record",
+   "fieldtype": "Button",
+   "label": "Fetch Record"
+  },
+  {
+   "default": "0",
+   "fieldname": "check",
+   "fieldtype": "Check",
+   "label": "Please Click Before Save"
+  },
+  {
+   "default": "Delivered",
+   "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
+   "fieldname": "s_status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Delivered"
+  }
+ ],
+ "hide_toolbar": 1,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2022-11-18 21:05:32.192732",
+ "modified_by": "Administrator",
+ "module": "Report Generator",
+ "name": "Report Generator",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
