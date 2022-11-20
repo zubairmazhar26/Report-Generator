@@ -8,27 +8,50 @@
  "engine": "InnoDB",
  "field_order": [
   "select_doctype",
-  "column_break_2",
+  "sales_invoice_section",
   "serial_no",
   "column_break_4",
   "item_code",
   "column_break_6",
   "te",
+  "cb8",
   "s_status",
-  "warehouse",
-  "column_break_8",
-  "batch_no",
-  "column_break_10",
+  "column_break_14",
+  "sales_document_no",
+  "section_break_12",
+  "sales_date",
+  "cb18",
+  "barcode",
+  "column_break_22a",
   "check",
   "fetch_record",
+  "section_break_20",
+  "creation_document_no",
+  "column_break_16",
+  "ser_status",
+  "column_break_12",
+  "si",
+  "fetch_record_sn",
+  "section_break_23",
+  "supplier",
+  "cb24",
+  "pi",
+  "fetch_record_pi",
   "section_break_10",
-  "report_record_details"
+  "report_record_details",
+  "section_break_33",
+  "total_rate",
+  "column_break_34",
+  "total_qty",
+  "column_break_36",
+  "grand_total"
  ],
  "fields": [
   {
    "fieldname": "serial_no",
-   "fieldtype": "Data",
-   "label": "Serial No"
+   "fieldtype": "Link",
+   "label": "Serial No",
+   "options": "Serial No"
   },
   {
    "fieldname": "item_code",
@@ -37,33 +60,12 @@
    "options": "Item"
   },
   {
-   "fieldname": "warehouse",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Warehouse",
-   "options": "Warehouse"
-  },
-  {
-   "fieldname": "batch_no",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Batch No",
-   "options": "Batch"
-  },
-  {
-   "fieldname": "column_break_2",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "column_break_4",
    "fieldtype": "Column Break"
   },
   {
+   "depends_on": "eval:doc.select_doctype == 'Purchase Invoice'",
    "fieldname": "column_break_6",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "column_break_8",
    "fieldtype": "Column Break"
   },
   {
@@ -77,11 +79,7 @@
    "fieldname": "te",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Return"
-  },
-  {
-   "fieldname": "column_break_10",
-   "fieldtype": "Column Break"
+   "options": "\nReturn\nPaid"
   },
   {
    "fieldname": "report_record_details",
@@ -93,7 +91,7 @@
    "fieldname": "select_doctype",
    "fieldtype": "Select",
    "label": "Select Doctype",
-   "options": "\nSales Invoice\nPurchase Invoice"
+   "options": "Serial No\nSales Invoice\nPurchase Invoice"
   },
   {
    "fieldname": "fetch_record",
@@ -112,14 +110,158 @@
    "fieldname": "s_status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Delivered"
+   "options": "Delivered\nDraft"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
+   "fieldname": "barcode",
+   "fieldtype": "Data",
+   "label": "Barcode"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Serial No'",
+   "fieldname": "creation_document_no",
+   "fieldtype": "Data",
+   "label": "Creation Document No"
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier",
+   "read_only_depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
+   "width": "100px"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Sales Invoice' || doc.select_doctype == 'Purchase Invoice' ",
+   "fieldname": "sales_document_no",
+   "fieldtype": "Dynamic Link",
+   "label": "Sales Document No",
+   "options": "select_doctype"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
+   "fieldname": "sales_date",
+   "fieldtype": "Date",
+   "label": "Sales Date"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
+   "fieldname": "column_break_14",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Serial No'",
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
+   "fieldname": "cb18",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb24",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
+   "fieldname": "column_break_22a",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
+   "fieldname": "section_break_12",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sales_invoice_section",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Serial No'",
+   "fieldname": "section_break_20",
+   "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Purchase Invoice'",
+   "fieldname": "section_break_23",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "pi",
+   "fieldtype": "Check",
+   "label": "Please Click Before Save"
+  },
+  {
+   "fieldname": "fetch_record_pi",
+   "fieldtype": "Button",
+   "label": "Fetch Record"
+  },
+  {
+   "default": "0",
+   "fieldname": "si",
+   "fieldtype": "Check",
+   "label": "Please Click Before Save"
+  },
+  {
+   "fieldname": "fetch_record_sn",
+   "fieldtype": "Button",
+   "label": "Fetch Record"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Serial No'",
+   "fieldname": "ser_status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "\nActive\nInactive\nDelivered\nExpired"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Serial No'",
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_rate",
+   "fieldtype": "Currency",
+   "label": "Total Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_34",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_qty",
+   "fieldtype": "Data",
+   "label": "Total Qty",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_36",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_33",
+   "fieldtype": "Section Break"
   }
  ],
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-11-18 21:05:32.192732",
+ "modified": "2022-11-20 09:45:05.986799",
  "modified_by": "Administrator",
  "module": "Report Generator",
  "name": "Report Generator",
