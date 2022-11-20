@@ -21,11 +21,17 @@
   "section_break_12",
   "sales_date",
   "cb18",
+  "to_date",
+  "column_break_343",
   "barcode",
   "column_break_22a",
   "check",
   "fetch_record",
   "section_break_20",
+  "s_from_date",
+  "s_from_date_col",
+  "s_to_date",
+  "to_col_break",
   "creation_document_no",
   "column_break_16",
   "ser_status",
@@ -33,6 +39,10 @@
   "si",
   "fetch_record_sn",
   "section_break_23",
+  "p_from_date",
+  "p_from_date_column",
+  "p_to_date",
+  "pcm",
   "supplier",
   "cb24",
   "pi",
@@ -140,10 +150,9 @@
    "options": "select_doctype"
   },
   {
-   "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
    "fieldname": "sales_date",
    "fieldtype": "Date",
-   "label": "Sales Date"
+   "label": "From Date"
   },
   {
    "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
@@ -156,7 +165,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
    "fieldname": "cb18",
    "fieldtype": "Column Break"
   },
@@ -255,13 +263,58 @@
   {
    "fieldname": "section_break_33",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "column_break_343",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "p_from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "fieldname": "p_from_date_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "p_to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "pcm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "s_from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "fieldname": "s_from_date_col",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "s_to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "to_col_break",
+   "fieldtype": "Column Break"
   }
  ],
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-11-20 09:45:05.986799",
+ "modified": "2022-11-20 13:22:42.855116",
  "modified_by": "Administrator",
  "module": "Report Generator",
  "name": "Report Generator",

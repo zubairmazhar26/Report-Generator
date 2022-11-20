@@ -80,6 +80,17 @@ frappe.ui.form.on('Report Generator', {
 	sales_date: function(frm) {
 		frm.save()
 	},
+	to_date: function(frm) {
+		frm.save()
+	},
+
+
+	p_from_date: function(frm) {
+		frm.save()
+	},
+	p_to_date: function(frm) {
+		frm.save()
+	},
 
 	sales_document_no: function(frm) {
 		frm.save()
