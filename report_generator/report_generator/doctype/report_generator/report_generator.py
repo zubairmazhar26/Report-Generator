@@ -12,14 +12,18 @@ class ReportGenerator(Document):
 		self.report_record_details = ""
 		value = {}
 		conditions = ""
-		if (self.item_code and self.ser_status and self.serial_no and self.creation_document_no and self.s_from_date and self.s_to_date):
-			conditions +=f"""where item_code='{self.item_code}' and status='{self.ser_status}' and serial_no='{self.serial_no}' and creation_document_no='{self.creation_document_no}' and delivery_date>='{self.s_from_date}' and delivery_date<='{self.s_to_date}'"""
-		elif (self.item_code and self.ser_status and self.serial_no):
-			conditions +=f"""where item_code='{self.item_code}' and status='{self.ser_status}' and serial_no='{self.serial_no}' """
+		if (self.item_code and self.ser_status and self.serial_no and self.creation_document_no and self.s_from_date and self.s_to_date and self.ser_supplier):
+			conditions +=f"""where item_code='{self.item_code}' and status='{self.ser_status}' and serial_no='{self.serial_no}' and creation_document_no='{self.creation_document_no}' and supplier='{self.ser_supplier}' and delivery_date>='{self.s_from_date}' and delivery_date<='{self.s_to_date}'"""
+		elif (self.item_code and self.ser_status and self.serial_no and self.ser_supplier):
+			conditions +=f"""where item_code='{self.item_code}' and status='{self.ser_status}' and serial_no='{self.serial_no}' and supplier='{self.ser_supplier}' """
+		elif (self.item_code and self.ser_status and self.serial_no and self.ser_supplier):
+			conditions +=f"""where item_code='{self.item_code}' and status='{self.ser_status}' and supplier='{self.ser_supplier}' and serial_no='{self.serial_no}' """
+		elif (self.item_code and self.ser_status and self.creation_document_no and self.ser_supplier):
+			conditions +=f"""where item_code='{self.item_code}' and status='{self.ser_status}' and creation_document_no='{self.creation_document_no}' and supplier='{self.ser_supplier}'"""
 		elif (self.item_code and self.ser_status and self.creation_document_no):
 			conditions +=f"""where item_code='{self.item_code}' and status='{self.ser_status}' and creation_document_no='{self.creation_document_no}'"""
-		elif (self.item_code and self.creation_document_no):
-			conditions +=f"""where item_code='{self.item_code}' and status='{self.ser_status}' and creation_document_no='{self.creation_document_no}'"""
+		elif (self.item_code and self.ser_status and self.ser_supplier):
+			conditions +=f"""where item_code='{self.item_code}' and status='{self.ser_status}' and supplier='{self.ser_supplier}'"""
 		elif (self.item_code and self.ser_status):
 			conditions +=f"""where item_code='{self.item_code}' and status='{self.ser_status}'"""
 		elif (self.ser_status and self.creation_document_no):
@@ -28,18 +32,24 @@ class ReportGenerator(Document):
 			conditions +=f"""where status='{self.ser_status}' and delivery_date>='{self.s_from_date}' and delivery_date<='{self.s_to_date}' """
 		elif (self.s_from_date and self.s_to_date):
 			conditions +=f"""where delivery_date>='{self.s_from_date}' and delivery_date<='{self.s_to_date}' """
+		elif (self.ser_status and self.ser_supplier):
+			conditions +=f"""where status='{self.ser_status}' and supplier='{self.ser_supplier}'"""
 		elif (self.ser_status):
 			conditions +=f"""where status='{self.ser_status}' """
 		elif (self.item_code):
 			conditions +=f"""where item_code='{self.item_code}'"""
 		elif (self.creation_document_no):
 			conditions +=f"""where creation_document_no='{self.creation_document_no}'"""
+		elif (self.ser_supplier):
+			conditions +=f"""where supplier='{self.ser_supplier}' """
 		elif (self.serial_no):
 			conditions +=f"""where serial_no='{self.serial_no}' """
 		else:
-			doc = frappe.db.sql(""" select item_code,item_name,warehouse,batch_no,status,name,company from `tabSerial No` """)
+			doc = frappe.db.sql(""" select item_code,item_name,warehouse,batch_no,status,name,company,precious_stone,stone_size,material_use,material_use_abbv,weight,\
+			diamond_size,cz,standard_rate,image,serial_ctr,supplier from `tabSerial No` """)
 			value = doc
-		doc = frappe.db.sql(""" select item_code,item_name,warehouse,batch_no,status,name,company from `tabSerial No` %s"""%conditions)
+		doc = frappe.db.sql(""" select item_code,item_name,warehouse,batch_no,status,name,company,precious_stone,stone_size,material_use,material_use_abbv,weight,\
+		diamond_size,cz,standard_rate,image,serial_ctr,supplier,purchase_rate from `tabSerial No` %s"""%conditions)
 		value = doc
 		for a in value:
 			row = self.append("report_record_details", {})
@@ -50,6 +60,17 @@ class ReportGenerator(Document):
 			row.status = a[4]
 			row.serial_no = a[5]
 			row.company = a[6]
+			row.precious_stone =a[7]
+			row.material_use_abbv = a[10]
+			row.stone_size = a[8]
+			row.cz = a[13]
+			row.diamond_size = a[12]
+			row.weight = a[11]
+			row.upload_image = a[15]
+			row.qty = a[16]
+			row.supplier = a[17]
+			row.rate = a[14]
+			row.price_list_rate = a[18]
 	@frappe.whitelist(allow_guest=True)
 	def getpinvoice(self):
 		self.report_record_details = ""
@@ -96,11 +117,11 @@ class ReportGenerator(Document):
 		elif (self.p_from_date and self.p_to_date):
 			conditions +=f"""where i.posting_date>='{self.p_from_date}' and i.posting_date<='{self.p_to_date}' """
 		else:
-			doc = frappe.db.sql(""" select si.serial_no,si.item_code,si.item_name,si.qty,si.image,si.warehouse,si.qty,si.rate,si.precious_stone,si.semi_precious_stone,\
-			si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.price_list_rate,i.posting_date,i.name,i.supplier from `tabPurchase Invoice Item` as si left join `tabPurchase Invoice` as i  ON si.parent=i.name where i.status=%s""",(self.te))
+			doc = frappe.db.sql(""" select si.serial_no,si.item_code,si.item_name,si.qty,si.image,si.warehouse,si.qty,si.standard_rate,si.precious_stone,si.semi_precious_stone,\
+			si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.rate,i.posting_date,i.name,i.supplier from `tabPurchase Invoice Item` as si left join `tabPurchase Invoice` as i  ON si.parent=i.name where i.status=%s""",(self.te))
 			value = doc
-		doc = frappe.db.sql(""" select si.serial_no,si.item_code,si.item_name,si.qty,si.image,si.warehouse,si.qty,si.rate,si.precious_stone,si.semi_precious_stone,\
-		si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.price_list_rate,i.posting_date,i.name,i.supplier from `tabPurchase Invoice Item` as si left join `tabPurchase Invoice` as i  ON si.parent=i.name %s"""%conditions)
+		doc = frappe.db.sql(""" select si.serial_no,si.item_code,si.item_name,si.qty,si.image,si.warehouse,si.qty,si.standard_rate,si.precious_stone,si.semi_precious_stone,\
+		si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.rate,i.posting_date,i.name,i.supplier from `tabPurchase Invoice Item` as si left join `tabPurchase Invoice` as i  ON si.parent=i.name %s"""%conditions)
 		value = doc
 		self.total_rate = 0
 		self.total_qty = 0
@@ -181,10 +202,10 @@ class ReportGenerator(Document):
 			conditions +=f"""where si.barcode='{self.barcode}' """
 		else:
 			doc = frappe.db.sql(""" select si.serial_no,si.item_code,si.item_name,si.delivered_qty,si.image,si.warehouse,si.qty,si.rate,si.precious_stone,si.semi_precious_stone,\
-			si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.price_list_rate,i.posting_date,i.name from `tabSales Invoice Item` as si left join `tabSales Invoice` as i  ON si.parent=i.name where i.status='Paid'""")
+			si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.valuation_rate,i.posting_date,i.name from `tabSales Invoice Item` as si left join `tabSales Invoice` as i  ON si.parent=i.name where i.status='Paid'""")
 			value = doc
 		doc = frappe.db.sql(""" select si.serial_no,si.item_code,si.item_name,si.delivered_qty,si.image,si.warehouse,si.qty,si.rate,si.precious_stone,si.semi_precious_stone,\
-		si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.price_list_rate,i.posting_date,i.name from `tabSales Invoice Item` as si left join `tabSales Invoice` as i  ON si.parent=i.name %s"""%conditions)
+		si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.valuation_rate,i.posting_date,i.name from `tabSales Invoice Item` as si left join `tabSales Invoice` as i  ON si.parent=i.name %s"""%conditions)
 		value = doc
 		self.total_rate = 0
 		self.total_qty = 0

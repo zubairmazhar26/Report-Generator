@@ -30,6 +30,8 @@
   "check",
   "fetch_record",
   "section_break_20",
+  "ser_supplier",
+  "ser_column_break",
   "s_from_date",
   "s_from_date_col",
   "s_to_date",
@@ -319,13 +321,23 @@
   {
    "fieldname": "section_break_2",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "ser_supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "ser_column_break",
+   "fieldtype": "Column Break"
   }
  ],
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-11-21 12:37:52.890940",
+ "modified": "2022-11-22 00:08:03.136766",
  "modified_by": "Administrator",
  "module": "Report Generator",
  "name": "Report Generator",
