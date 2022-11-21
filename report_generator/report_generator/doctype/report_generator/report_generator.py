@@ -37,9 +37,9 @@ class ReportGenerator(Document):
 		elif (self.serial_no):
 			conditions +=f"""where serial_no='{self.serial_no}' """
 		else:
-			doc = frappe.db.sql(""" select item_code,item_name,warehouse,batch_no,status,upload_image,name,company from `tabSerial No` """)
+			doc = frappe.db.sql(""" select item_code,item_name,warehouse,batch_no,status,name,company from `tabSerial No` """)
 			value = doc
-		doc = frappe.db.sql(""" select item_code,item_name,warehouse,batch_no,status,upload_image,name,company from `tabSerial No` %s"""%conditions)
+		doc = frappe.db.sql(""" select item_code,item_name,warehouse,batch_no,status,name,company from `tabSerial No` %s"""%conditions)
 		value = doc
 		for a in value:
 			row = self.append("report_record_details", {})
@@ -48,9 +48,8 @@ class ReportGenerator(Document):
 			row.warehouse = a[2]
 			row.batch_no = a[3]
 			row.status = a[4]
-			row.upload_image = a[5]
-			row.serial_no = a[6]
-			row.company = a[7]
+			row.serial_no = a[5]
+			row.company = a[6]
 	@frappe.whitelist(allow_guest=True)
 	def getpinvoice(self):
 		self.report_record_details = ""
