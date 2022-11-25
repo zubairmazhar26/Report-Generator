@@ -8,6 +8,10 @@
  "engine": "InnoDB",
  "field_order": [
   "logo_for_print",
+  "column_break_2",
+  "select_report_title",
+  "cm_2_af",
+  "print_format",
   "section_break_2",
   "select_doctype",
   "sales_invoice_section",
@@ -15,11 +19,15 @@
   "column_break_4",
   "item_code",
   "column_break_6",
+  "sales_document_type",
   "te",
+  "mop",
   "cb8",
   "s_status",
+  "supplier_dell_note",
   "column_break_14",
   "sales_document_no",
+  "ser_sales_document_no",
   "section_break_12",
   "sales_date",
   "cb18",
@@ -70,7 +78,7 @@
   {
    "fieldname": "item_code",
    "fieldtype": "Link",
-   "label": "Item Code",
+   "label": "Item",
    "options": "Item"
   },
   {
@@ -92,8 +100,8 @@
    "depends_on": "eval:doc.select_doctype == 'Purchase Invoice'",
    "fieldname": "te",
    "fieldtype": "Select",
-   "label": "Status",
-   "options": "\nReturn\nPaid"
+   "label": "Status Consignment",
+   "options": "\nDraft\nReturn\nDebit Note Issued\nSubmitted\nPaid\nPartly Paid\nUnpaid\nOverdue\nCancelled\nInternal Transfer"
   },
   {
    "fieldname": "report_record_details",
@@ -123,8 +131,8 @@
    "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
    "fieldname": "s_status",
    "fieldtype": "Select",
-   "label": "Status",
-   "options": "Delivered\nDraft"
+   "label": "Status Certificate",
+   "options": "\nDelivered\nDraft\nUnpaid\nCancelled\nReturn"
   },
   {
    "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
@@ -147,7 +155,7 @@
    "width": "100px"
   },
   {
-   "depends_on": "eval:doc.select_doctype == 'Sales Invoice' || doc.select_doctype == 'Purchase Invoice' ",
+   "depends_on": "eval:doc.select_doctype == 'Sales Invoice' || doc.select_doctype == 'Purchase Invoice'",
    "fieldname": "sales_document_no",
    "fieldtype": "Dynamic Link",
    "label": "Sales Document No",
@@ -230,8 +238,8 @@
    "depends_on": "eval:doc.select_doctype == 'Serial No'",
    "fieldname": "ser_status",
    "fieldtype": "Select",
-   "label": "Status",
-   "options": "\nActive\nInactive\nDelivered\nExpired"
+   "label": "Status Serial No",
+   "options": "\nActive\nInactive\nDelivered"
   },
   {
    "depends_on": "eval:doc.select_doctype == 'Serial No'",
@@ -331,13 +339,60 @@
   {
    "fieldname": "ser_column_break",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "select_report_title",
+   "fieldtype": "Select",
+   "label": "Select Report Title",
+   "options": "\n--- FOR SERIAL NO. ---\nBACK OFFICE SALES REPORT - SOLD (SERIAL NO.)\nBACK OFFICE SUPPLIER REPORT - SOLD (SERIAL NO.)\nBACK OFFICE SUPPLIER REPORT - RETURN (SERIAL NO.)\n--- FOR CERTIFICATE ---\nBACK OFFICE SALES REPORT - CC & BT (CERTIFICATE)\nBACK OFFICE SALES REPORT - *CH & *SP (CERTIFICATE)\n--- FOR CONSIGNMENT ---\nBACK OFFICE SUPPLIER REPORT (CONSIGNMENT)"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cm_2_af",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "print_format",
+   "fieldtype": "Link",
+   "label": "Print Format",
+   "options": "Print Format"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Serial No'",
+   "fieldname": "sales_document_type",
+   "fieldtype": "Select",
+   "label": "Sales Document Type",
+   "options": "\nSales Invoice\nPurchase Invoice"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Serial No'",
+   "fieldname": "ser_sales_document_no",
+   "fieldtype": "Dynamic Link",
+   "label": "Sales Document No",
+   "options": "sales_document_type"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
+   "fieldname": "mop",
+   "fieldtype": "Select",
+   "label": "MOP",
+   "options": "\nCC\nBT\n*CH\n*SP"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Purchase Invoice'",
+   "fieldname": "supplier_dell_note",
+   "fieldtype": "Data",
+   "label": "Supplier Dell Note"
   }
  ],
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-11-22 00:08:03.136766",
+ "modified": "2022-11-26 00:16:04.247263",
  "modified_by": "Administrator",
  "module": "Report Generator",
  "name": "Report Generator",
