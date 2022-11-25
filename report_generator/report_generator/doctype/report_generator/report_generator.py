@@ -182,6 +182,10 @@ class ReportGenerator(Document):
 			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{self.te}' and si.serial_no='{self.serial_no}' and i.bill_no='{self.supplier_dell_note}' """
 		elif (self.item_code and self.te and self.serial_no):
 			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{self.te}' and si.serial_no='{self.serial_no}' """
+		elif (self.item_code and self.te and self.p_from_date and self.p_to_date and self.supplier_dell_note and self.sales_document_no):
+			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{self.te}' and i.posting_date>='{self.p_from_date}' and i.posting_date<='{self.p_to_date}' and i.bill_no='{self.supplier_dell_note}' and i.name='{self.sales_document_no}' """
+		elif (self.item_code and self.te and self.p_from_date and self.p_to_date and self.supplier_dell_note):
+			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{self.te}' and i.posting_date>='{self.p_from_date}' and i.posting_date<='{self.p_to_date}' and i.bill_no='{self.supplier_dell_note}' """
 		elif (self.item_code and self.te and self.sales_document_no and self.supplier_dell_note):
 			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{self.te}' and i.name='{self.sales_document_no}' and i.bill_no='{self.supplier_dell_note}' """
 		elif (self.item_code and self.te and self.sales_document_no and self.supplier_dell_note):
@@ -190,14 +194,15 @@ class ReportGenerator(Document):
 			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{self.te}' and i.supplier='{self.supplier}' and i.bill_no='{self.supplier_dell_note}' """
 		elif (self.item_code and self.te and self.supplier):
 			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{self.te}' and i.supplier='{self.supplier}' """
-		elif (self.te and self.serial_no and self.supplier_dell_note):
-			conditions +=f"""where i.status='{self.te}' and si.serial_no='{self.serial_no}' and i.bill_no='{self.supplier_dell_note}' """
-		elif (self.te and self.serial_no):
-			conditions +=f"""where i.status='{self.te}' and si.serial_no='{self.serial_no}' """
+		# z
 		elif (self.te and self.supplier and self.p_from_date and self.p_to_date and self.supplier_dell_note):
 			conditions +=f"""where i.status='{self.te}' and i.supplier='{self.supplier}' and i.posting_date>='{self.p_from_date}' and i.posting_date<='{self.p_to_date}' and i.bill_no='{self.supplier_dell_note}' """
+		elif (self.te and self.p_from_date and self.p_to_date and self.supplier_dell_note):
+			conditions +=f"""where i.status='{self.te}' and i.posting_date>='{self.p_from_date}' and i.posting_date<='{self.p_to_date}' and i.bill_no='{self.supplier_dell_note}' """
 		elif (self.te and self.supplier and self.p_from_date and self.p_to_date):
 			conditions +=f"""where i.status='{self.te}' and i.supplier='{self.supplier}' and i.posting_date>='{self.p_from_date}' and i.posting_date<='{self.p_to_date}' """
+		elif (self.te and self.serial_no and self.supplier_dell_note):
+			conditions +=f"""where i.status='{self.te}' and si.serial_no='{self.serial_no}' and i.bill_no='{self.supplier_dell_note}' """
 		elif (self.te and self.supplier and self.supplier_dell_note):
 			conditions +=f"""where i.status='{self.te}' and i.supplier='{self.supplier}' and i.bill_no='{self.supplier_dell_note}'"""
 		elif (self.te and self.supplier):
@@ -210,8 +215,11 @@ class ReportGenerator(Document):
 			conditions +=f"""where i.status='{self.te}' and i.name='{self.sales_document_no}' and i.bill_no='{self.supplier_dell_note}' """
 		elif (self.te and self.sales_document_no and self.supplier_dell_note):
 			conditions +=f"""where i.status='{self.te}' and i.name='{self.sales_document_no}' """
+		elif (self.te and self.serial_no):
+			conditions +=f"""where i.status='{self.te}' and si.serial_no='{self.serial_no}' """
 		elif (self.item_code and self.te and self.supplier_dell_note):
 			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{self.te}' and i.bill_no='{self.supplier_dell_note}' """
+		# z
 		elif (self.item_code and self.te):
 			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{self.te}' """
 		elif (self.item_code and self.supplier and self.supplier_dell_note):

@@ -101,6 +101,9 @@ frm.save()
 	to_date: function(frm) {
 		frm.save()
 	},
+	supplier_dell_note: function(frm) {
+		frm.save()
+	},
 
 
 	p_from_date: function(frm) {
