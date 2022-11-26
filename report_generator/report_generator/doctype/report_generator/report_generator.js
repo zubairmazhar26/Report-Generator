@@ -149,3 +149,18 @@ frm.save()
 		frm.save()
 	},
 });
+
+
+
+// frappe.ui.form.on('Report Generator', {
+//     onload: function(frm) {
+//         frm.set_query("print_format", function(){
+//             return {
+//                 "filters": {
+//                     "doc_type": "Report Generator"
+//                 }
+//             };
+//         });
+//     }
+	
+// });

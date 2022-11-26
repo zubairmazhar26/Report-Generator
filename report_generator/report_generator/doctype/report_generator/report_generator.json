@@ -9,7 +9,6 @@
  "field_order": [
   "logo_for_print",
   "column_break_2",
-  "select_report_title",
   "cm_2_af",
   "print_format",
   "section_break_2",
@@ -64,9 +63,9 @@
   "section_break_33",
   "total_rate",
   "column_break_34",
-  "total_qty",
+  "grand_total",
   "column_break_36",
-  "grand_total"
+  "total_qty"
  ],
  "fields": [
   {
@@ -78,7 +77,7 @@
   {
    "fieldname": "item_code",
    "fieldtype": "Link",
-   "label": "Item",
+   "label": "Item Code",
    "options": "Item"
   },
   {
@@ -100,7 +99,7 @@
    "depends_on": "eval:doc.select_doctype == 'Purchase Invoice'",
    "fieldname": "te",
    "fieldtype": "Select",
-   "label": "Status Consignment",
+   "label": "Status (Consignment)",
    "options": "\nDraft\nReturn\nDebit Note Issued\nSubmitted\nPaid\nPartly Paid\nUnpaid\nOverdue\nCancelled\nInternal Transfer"
   },
   {
@@ -127,17 +126,18 @@
    "label": "Please Click Before Save"
   },
   {
-   "default": "Delivered",
+   "default": "Paid",
    "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
    "fieldname": "s_status",
    "fieldtype": "Select",
-   "label": "Status Certificate",
-   "options": "\nDelivered\nDraft\nUnpaid\nCancelled\nReturn"
+   "label": "Status (Certificate)",
+   "options": "\nPaid\nDraft\nUnpaid\nCancelled\nReturn"
   },
   {
    "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
    "fieldname": "barcode",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Barcode"
   },
   {
@@ -164,7 +164,7 @@
   {
    "fieldname": "sales_date",
    "fieldtype": "Date",
-   "label": "From Date"
+   "label": "From (Sale Date Certificate)"
   },
   {
    "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
@@ -238,7 +238,7 @@
    "depends_on": "eval:doc.select_doctype == 'Serial No'",
    "fieldname": "ser_status",
    "fieldtype": "Select",
-   "label": "Status Serial No",
+   "label": "Status (Serial No)",
    "options": "\nActive\nInactive\nDelivered"
   },
   {
@@ -249,7 +249,7 @@
   {
    "fieldname": "total_rate",
    "fieldtype": "Currency",
-   "label": "Total Rate",
+   "label": "Total Purchase Rate",
    "read_only": 1
   },
   {
@@ -269,7 +269,7 @@
   {
    "fieldname": "grand_total",
    "fieldtype": "Currency",
-   "label": "Grand Total",
+   "label": "Total Selling Rate",
    "read_only": 1
   },
   {
@@ -279,7 +279,7 @@
   {
    "fieldname": "to_date",
    "fieldtype": "Date",
-   "label": "To Date"
+   "label": "To (Sale Date Certificate)"
   },
   {
    "fieldname": "column_break_343",
@@ -288,7 +288,7 @@
   {
    "fieldname": "p_from_date",
    "fieldtype": "Date",
-   "label": "From Date"
+   "label": "From (Sale Date Consignment)"
   },
   {
    "fieldname": "p_from_date_column",
@@ -297,7 +297,7 @@
   {
    "fieldname": "p_to_date",
    "fieldtype": "Date",
-   "label": "To Date"
+   "label": "To (Sale Date Consignment)"
   },
   {
    "fieldname": "pcm",
@@ -306,7 +306,7 @@
   {
    "fieldname": "s_from_date",
    "fieldtype": "Date",
-   "label": "From Date"
+   "label": "From (Sale Date Serial No)"
   },
   {
    "fieldname": "s_from_date_col",
@@ -315,7 +315,7 @@
   {
    "fieldname": "s_to_date",
    "fieldtype": "Date",
-   "label": "To Date"
+   "label": "To (Sale Date Serial No)"
   },
   {
    "fieldname": "to_col_break",
@@ -324,6 +324,7 @@
   {
    "fieldname": "logo_for_print",
    "fieldtype": "Attach",
+   "hidden": 1,
    "label": "Logo For Print"
   },
   {
@@ -339,12 +340,6 @@
   {
    "fieldname": "ser_column_break",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "select_report_title",
-   "fieldtype": "Select",
-   "label": "Select Report Title",
-   "options": "\n--- FOR SERIAL NO. ---\nBACK OFFICE SALES REPORT - SOLD (SERIAL NO.)\nBACK OFFICE SUPPLIER REPORT - SOLD (SERIAL NO.)\nBACK OFFICE SUPPLIER REPORT - RETURN (SERIAL NO.)\n--- FOR CERTIFICATE ---\nBACK OFFICE SALES REPORT - CC & BT (CERTIFICATE)\nBACK OFFICE SALES REPORT - *CH & *SP (CERTIFICATE)\n--- FOR CONSIGNMENT ---\nBACK OFFICE SUPPLIER REPORT (CONSIGNMENT)"
   },
   {
    "fieldname": "column_break_2",
@@ -385,14 +380,14 @@
    "depends_on": "eval:doc.select_doctype == 'Purchase Invoice'",
    "fieldname": "supplier_dell_note",
    "fieldtype": "Data",
-   "label": "Supplier Dell Note"
+   "label": "Supplier Delivery Note"
   }
  ],
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-11-26 00:16:04.247263",
+ "modified": "2022-11-26 13:12:47.211626",
  "modified_by": "Administrator",
  "module": "Report Generator",
  "name": "Report Generator",

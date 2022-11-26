@@ -240,10 +240,10 @@ class ReportGenerator(Document):
 			conditions +=f"""where i.posting_date>='{self.p_from_date}' and i.posting_date<='{self.p_to_date}' """
 		else:
 			doc = frappe.db.sql(""" select si.serial_no,si.item_code,si.item_name,si.qty,si.image,si.warehouse,si.qty,si.standard_rate,si.precious_stone,si.semi_precious_stone,\
-			si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.rate,i.posting_date,i.name,i.supplier,i.bill_no from `tabPurchase Invoice Item` as si left join `tabPurchase Invoice` as i  ON si.parent=i.name where i.status=%s""",(self.te))
+			si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.rate,i.posting_date,i.name,i.supplier,i.bill_no,i.status from `tabPurchase Invoice Item` as si left join `tabPurchase Invoice` as i  ON si.parent=i.name where i.status=%s""",(self.te))
 			value = doc
 		doc = frappe.db.sql(""" select si.serial_no,si.item_code,si.item_name,si.qty,si.image,si.warehouse,si.qty,si.standard_rate,si.precious_stone,si.semi_precious_stone,\
-		si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.rate,i.posting_date,i.name,i.supplier,i.bill_no from `tabPurchase Invoice Item` as si left join `tabPurchase Invoice` as i  ON si.parent=i.name %s"""%conditions)
+		si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.rate,i.posting_date,i.name,i.supplier,i.bill_no,i.status from `tabPurchase Invoice Item` as si left join `tabPurchase Invoice` as i  ON si.parent=i.name %s"""%conditions)
 		value = doc
 		self.total_rate = 0
 		self.total_qty = 0
@@ -270,7 +270,10 @@ class ReportGenerator(Document):
 				row.sales_date = v[16]
 				row.supplier = v[18]
 				row.bill_no = v[19]
-				row.status = self.te
+				if self.te:
+					row.status = self.te
+				else:
+					row.status = v[20]
 				self.total_rate += v[15]
 				self.total_qty += v[6]
 				self.grand_total += v[6] * v[7]
@@ -361,10 +364,10 @@ class ReportGenerator(Document):
 			conditions +=f"""where i.mop='{self.mop}' """
 		else:
 			doc = frappe.db.sql(""" select si.serial_no,si.item_code,si.item_name,si.delivered_qty,si.image,si.warehouse,si.qty,si.rate,si.precious_stone,si.semi_precious_stone,\
-			si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.valuation_rate,i.posting_date,i.name,i.mop from `tabSales Invoice Item` as si left join `tabSales Invoice` as i  ON si.parent=i.name where i.status='Paid'""")
+			si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.valuation_rate,i.posting_date,i.name,i.mop,i.status from `tabSales Invoice Item` as si left join `tabSales Invoice` as i  ON si.parent=i.name where i.status='Paid'""")
 			value = doc
 		doc = frappe.db.sql(""" select si.serial_no,si.item_code,si.item_name,si.delivered_qty,si.image,si.warehouse,si.qty,si.rate,si.precious_stone,si.semi_precious_stone,\
-		si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.valuation_rate,i.posting_date,i.name,i.mop from `tabSales Invoice Item` as si left join `tabSales Invoice` as i  ON si.parent=i.name %s"""%conditions)
+		si.material_use_abbv,si.stone_size,si.cz,si.diamond_size,si.weight,si.valuation_rate,i.posting_date,i.name,i.mop,i.status from `tabSales Invoice Item` as si left join `tabSales Invoice` as i  ON si.parent=i.name %s"""%conditions)
 		value = doc
 		self.total_rate = 0
 		self.total_qty = 0
@@ -390,7 +393,10 @@ class ReportGenerator(Document):
 				row.price_list_rate = v[15]
 				row.sales_date = v[16]
 				row.mop = v[18]
-				row.status = s_status
+				if self.s_status:
+					row.status = s_status
+				else:
+					row.status = v[19]
 				self.total_rate += v[15]
 				self.total_qty += v[6]
 				self.grand_total += v[6] * v[7]
