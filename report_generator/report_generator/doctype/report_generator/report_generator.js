@@ -148,6 +148,9 @@ frm.save()
 	serial_no: function(frm) {
 		frm.save()
 	},
+	item_group: function(frm) {
+		frm.save()
+	},
 });
 
 

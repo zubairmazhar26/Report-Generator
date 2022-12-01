@@ -91,12 +91,8 @@ class ReportGenerator(Document):
 			conditions +=f"""where status='{self.ser_status}' and creation_document_no='{self.creation_document_no}'"""
 		elif (self.ser_status and self.s_from_date and self.s_to_date and self.sales_document_type and self.ser_sales_document_no):
 			conditions +=f"""where status='{self.ser_status}' and delivery_date>='{self.s_from_date}' and delivery_date<='{self.s_to_date}' and delivery_document_type='{self.sales_document_type}' and delivery_document_no='{self.ser_sales_document_no}' """
-		elif (self.ser_status and self.s_from_date and self.s_to_date):
-			conditions +=f"""where status='{self.ser_status}' and delivery_date>='{self.s_from_date}' and delivery_date<='{self.s_to_date}' """
 		elif (self.s_from_date and self.s_to_date and self.sales_document_type and self.ser_sales_document_no):
 			conditions +=f"""where delivery_date>='{self.s_from_date}' and delivery_date<='{self.s_to_date}' and delivery_document_type='{self.sales_document_type}' and delivery_document_no='{self.ser_sales_document_no}'"""
-		elif (self.s_from_date and self.s_to_date):
-			conditions +=f"""where delivery_date>='{self.s_from_date}' and delivery_date<='{self.s_to_date}' """
 		elif (self.ser_status and self.ser_supplier and self.sales_document_type and self.ser_sales_document_no):
 			conditions +=f"""where status='{self.ser_status}' and supplier='{self.ser_supplier}' and delivery_document_type='{self.sales_document_type}' and delivery_document_no='{self.ser_sales_document_no}'"""
 		elif (self.ser_status and self.ser_supplier):
@@ -107,6 +103,16 @@ class ReportGenerator(Document):
 			conditions +=f"""where status='{self.ser_status}' and delivery_document_type='{self.sales_document_type}' """
 		elif (self.ser_status and self.ser_sales_document_no):
 			conditions +=f"""where status='{self.ser_status}' and delivery_document_no='{self.ser_sales_document_no}' """
+		elif (self.ser_status and self.s_from_date and self.s_to_date and self.item_group):
+			conditions +=f"""where status='{self.ser_status}' and delivery_date>='{self.s_from_date}' and delivery_date<='{self.s_to_date}' and item_group='{self.item_group}' """
+		elif (self.ser_status and self.s_from_date and self.s_to_date):
+			conditions +=f"""where status='{self.ser_status}' and delivery_date>='{self.s_from_date}' and delivery_date<='{self.s_to_date}' """
+		elif (self.s_from_date and self.s_to_date and self.item_group):
+			conditions +=f"""where delivery_date>='{self.s_from_date}' and delivery_date<='{self.s_to_date}' and item_group='{self.item_group}' """
+		elif (self.s_from_date and self.s_to_date):
+			conditions +=f"""where delivery_date>='{self.s_from_date}' and delivery_date<='{self.s_to_date}' """
+		elif (self.ser_status and self.item_group):
+			conditions +=f"""where status='{self.ser_status}' and item_group='{self.item_group}' """
 		elif (self.ser_status):
 			conditions +=f"""where status='{self.ser_status}' """
 		elif (self.item_code):
@@ -125,10 +131,10 @@ class ReportGenerator(Document):
 			conditions +=f"""where delivery_document_no='{self.ser_sales_document_no}' """
 		else:
 			doc = frappe.db.sql(""" select item_code,item_name,warehouse,batch_no,status,name,company,precious_stone,stone_size,material_use,material_use_abbv,weight,\
-			diamond_size,cz,standard_rate,image,serial_ctr,supplier,purchase_rate,delivery_date from `tabSerial No` """)
+			diamond_size,cz,standard_rate,image,serial_ctr,supplier,purchase_rate,delivery_date,delivery_document_type,delivery_document_no,item_group from `tabSerial No` """)
 			value = doc
 		doc = frappe.db.sql(""" select item_code,item_name,warehouse,batch_no,status,name,company,precious_stone,stone_size,material_use,material_use_abbv,weight,\
-		diamond_size,cz,standard_rate,image,serial_ctr,supplier,purchase_rate,delivery_date from `tabSerial No` %s"""%conditions)
+		diamond_size,cz,standard_rate,image,serial_ctr,supplier,purchase_rate,delivery_date,delivery_document_type,delivery_document_no,item_group from `tabSerial No` %s"""%conditions)
 		value = doc
 		self.total_rate = 0
 		self.total_qty = 0
@@ -154,6 +160,9 @@ class ReportGenerator(Document):
 			row.rate = a[14]
 			row.sales_date = a[19]
 			row.price_list_rate = a[18]
+			row.sales_document_type = a[20]
+			row.sales_document_no = a[21]
+			row.item_group = a[22]
 			self.total_rate += a[18]
 			self.total_qty += a[16]
 			self.grand_total += a[16] * a[14]
@@ -325,19 +334,22 @@ class ReportGenerator(Document):
 		elif (self.item_code and self.s_status and self.barcode and self.mop):
 			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{n_status}' and si.barcode='{self.barcode}' and i.mop='{self.mop}' """
 		elif (self.item_code and self.s_status and self.barcode):
-			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{n_status}' and si.barcode='{self.barcode}' """		
+			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{n_status}' and si.barcode='{self.barcode}' """
+		# item_code		
 		elif (self.s_status and self.sales_date and self.to_date and self.sales_document_no and self.mop):
 			conditions +=f"""where i.status='{n_status}' and i.posting_date>='{self.sales_date}' and i.posting_date<='{self.to_date}' and i.name='{self.sales_document_no}' and i.mop='{self.mop}' """
 		elif (self.s_status and self.sales_date and self.to_date and self.sales_document_no):
 			conditions +=f"""where i.status='{n_status}' and i.posting_date>='{self.sales_date}' and i.posting_date<='{self.to_date}' and i.name='{self.sales_document_no}' """
 		elif (self.s_status and self.serial_no and self.mop):
 			conditions +=f"""where i.status='{n_status}' and si.serial_no='{self.serial_no}' and i.mop='{self.mop}' """
-		elif (self.s_status and self.serial_no):
-			conditions +=f"""where i.status='{n_status}' and si.serial_no='{self.serial_no}' """
 		elif (self.s_status and self.sales_date and self.to_date and self.mop):
 			conditions +=f"""where i.status='{n_status}' and i.posting_date>='{self.sales_date}' and i.posting_date<='{self.to_date}' and i.mop='{self.mop}' """
+		elif (self.s_status and self.serial_no and self.sales_date and self.to_date):
+			conditions +=f"""where i.status='{n_status}' and si.serial_no='{self.serial_no}' and i.posting_date>='{self.sales_date}' and i.posting_date<='{self.to_date}' """
 		elif (self.s_status and self.sales_date and self.to_date):
 			conditions +=f"""where i.status='{n_status}' and i.posting_date>='{self.sales_date}' and i.posting_date<='{self.to_date}' """
+		elif (self.serial_no and self.sales_date and self.to_date):
+			conditions +=f"""where si.serial_no='{self.serial_no}' and i.posting_date>='{self.sales_date}' and i.posting_date<='{self.to_date}' """
 		elif (self.s_status and self.barcode and self.mop):
 			conditions +=f"""where i.status='{n_status}' and si.barcode='{self.barcode}' and i.mop='{self.mop}' """
 		elif (self.s_status and self.barcode):
@@ -350,8 +362,10 @@ class ReportGenerator(Document):
 			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{n_status}' and i.mop='{self.mop}' """
 		elif (self.item_code and self.s_status):
 			conditions +=f"""where si.item_code='{self.item_code}' and i.status='{n_status}' """
-		
-		
+		elif (self.s_status and self.serial_no):
+			conditions +=f"""where i.status='{n_status}' and si.serial_no='{self.serial_no}' """
+		elif (self.sales_date and self.to_date):
+			conditions +=f"""where i.posting_date>='{self.sales_date}' and i.posting_date<='{self.to_date}' """
 		elif(self.s_status):
 			conditions +=f"""where i.status='{n_status}' """
 		elif(self.item_code):

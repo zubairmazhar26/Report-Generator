@@ -8,30 +8,34 @@
  "engine": "InnoDB",
  "field_order": [
   "logo_for_print",
+  "select_doctype",
+  "display_serial_print_format_remarks",
   "column_break_2",
+  "report_gen_header",
   "cm_2_af",
   "print_format",
   "section_break_2",
-  "select_doctype",
   "sales_invoice_section",
   "serial_no",
   "column_break_4",
   "item_code",
   "column_break_6",
-  "sales_document_type",
-  "te",
-  "mop",
+  "item_group",
   "cb8",
+  "sales_document_type",
   "s_status",
   "supplier_dell_note",
   "column_break_14",
   "sales_document_no",
+  "ser_status",
+  "te",
   "ser_sales_document_no",
   "section_break_12",
-  "sales_date",
+  "mop",
   "cb18",
-  "to_date",
+  "sales_date",
   "column_break_343",
+  "to_date",
   "barcode",
   "column_break_22a",
   "check",
@@ -45,16 +49,15 @@
   "to_col_break",
   "creation_document_no",
   "column_break_16",
-  "ser_status",
   "column_break_12",
   "si",
   "fetch_record_sn",
   "section_break_23",
-  "p_from_date",
-  "p_from_date_column",
-  "p_to_date",
-  "pcm",
   "supplier",
+  "p_from_date_column",
+  "p_from_date",
+  "pcm",
+  "p_to_date",
   "cb24",
   "pi",
   "fetch_record_pi",
@@ -71,13 +74,13 @@
   {
    "fieldname": "serial_no",
    "fieldtype": "Link",
-   "label": "Serial No",
+   "label": "Serial No (Optional)",
    "options": "Serial No"
   },
   {
    "fieldname": "item_code",
    "fieldtype": "Link",
-   "label": "Item Code",
+   "label": "Item Code (Optional)",
    "options": "Item"
   },
   {
@@ -99,7 +102,7 @@
    "depends_on": "eval:doc.select_doctype == 'Purchase Invoice'",
    "fieldname": "te",
    "fieldtype": "Select",
-   "label": "Status (Consignment)",
+   "label": "2) Status (On Consignment)",
    "options": "\nDraft\nReturn\nDebit Note Issued\nSubmitted\nPaid\nPartly Paid\nUnpaid\nOverdue\nCancelled\nInternal Transfer"
   },
   {
@@ -111,7 +114,7 @@
   {
    "fieldname": "select_doctype",
    "fieldtype": "Select",
-   "label": "Select Doctype",
+   "label": "1) Select Doctype",
    "options": "Serial No\nSales Invoice\nPurchase Invoice"
   },
   {
@@ -130,8 +133,8 @@
    "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
    "fieldname": "s_status",
    "fieldtype": "Select",
-   "label": "Status (Certificate)",
-   "options": "\nPaid\nDraft\nUnpaid\nCancelled\nReturn"
+   "label": "2) Status (On Certificate)",
+   "options": "\nDraft\nReturn\nCredit Note Issued\nSubmitted\nPaid\nPartly Paid\nUnpaid\nUnpaid and Discounted\nPartly Paid and Discounted\nOverdue and Discounted\nOverdue\nCancelled\nInternal Transfer"
   },
   {
    "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
@@ -144,12 +147,13 @@
    "depends_on": "eval:doc.select_doctype == 'Serial No'",
    "fieldname": "creation_document_no",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Creation Document No"
   },
   {
    "fieldname": "supplier",
    "fieldtype": "Link",
-   "label": "Supplier",
+   "label": "3) Supplier (On Consignment)",
    "options": "Supplier",
    "read_only_depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
    "width": "100px"
@@ -158,13 +162,14 @@
    "depends_on": "eval:doc.select_doctype == 'Sales Invoice' || doc.select_doctype == 'Purchase Invoice'",
    "fieldname": "sales_document_no",
    "fieldtype": "Dynamic Link",
+   "hidden": 1,
    "label": "Sales Document No",
    "options": "select_doctype"
   },
   {
    "fieldname": "sales_date",
    "fieldtype": "Date",
-   "label": "From (Sale Date Certificate)"
+   "label": "4) From Sale Date (On Certificate)"
   },
   {
    "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
@@ -235,11 +240,12 @@
    "label": "Fetch Record"
   },
   {
+   "default": "Delivered",
    "depends_on": "eval:doc.select_doctype == 'Serial No'",
    "fieldname": "ser_status",
    "fieldtype": "Select",
-   "label": "Status (Serial No)",
-   "options": "\nActive\nInactive\nDelivered"
+   "label": "2) Status (On Serial)",
+   "options": "\nActive\nInactive\nDelivered\nExpired"
   },
   {
    "depends_on": "eval:doc.select_doctype == 'Serial No'",
@@ -279,7 +285,7 @@
   {
    "fieldname": "to_date",
    "fieldtype": "Date",
-   "label": "To (Sale Date Certificate)"
+   "label": "5) To Sales Date (On Certificate)"
   },
   {
    "fieldname": "column_break_343",
@@ -288,7 +294,7 @@
   {
    "fieldname": "p_from_date",
    "fieldtype": "Date",
-   "label": "From (Sale Date Consignment)"
+   "label": "4) From Sale Date (On Consignment)"
   },
   {
    "fieldname": "p_from_date_column",
@@ -297,7 +303,7 @@
   {
    "fieldname": "p_to_date",
    "fieldtype": "Date",
-   "label": "To (Sale Date Consignment)"
+   "label": "5) To Sale Date (On Consignment)"
   },
   {
    "fieldname": "pcm",
@@ -306,7 +312,7 @@
   {
    "fieldname": "s_from_date",
    "fieldtype": "Date",
-   "label": "From (Sale Date Serial No)"
+   "label": "4) From Sale Date (On Serial)"
   },
   {
    "fieldname": "s_from_date_col",
@@ -315,7 +321,7 @@
   {
    "fieldname": "s_to_date",
    "fieldtype": "Date",
-   "label": "To (Sale Date Serial No)"
+   "label": "5) To Sale Date (On Serial)"
   },
   {
    "fieldname": "to_col_break",
@@ -334,7 +340,7 @@
   {
    "fieldname": "ser_supplier",
    "fieldtype": "Link",
-   "label": "Supplier",
+   "label": "3) Supplier (On Serial)",
    "options": "Supplier"
   },
   {
@@ -359,13 +365,14 @@
    "depends_on": "eval:doc.select_doctype == 'Serial No'",
    "fieldname": "sales_document_type",
    "fieldtype": "Select",
-   "label": "Sales Document Type",
+   "label": "Sales Doc Type (Optional)",
    "options": "\nSales Invoice\nPurchase Invoice"
   },
   {
    "depends_on": "eval:doc.select_doctype == 'Serial No'",
    "fieldname": "ser_sales_document_no",
    "fieldtype": "Dynamic Link",
+   "hidden": 1,
    "label": "Sales Document No",
    "options": "sales_document_type"
   },
@@ -373,21 +380,40 @@
    "depends_on": "eval:doc.select_doctype == 'Sales Invoice'",
    "fieldname": "mop",
    "fieldtype": "Select",
-   "label": "MOP",
+   "label": "3) MOP (On Certificate)",
    "options": "\nCC\nBT\n*CH\n*SP"
   },
   {
    "depends_on": "eval:doc.select_doctype == 'Purchase Invoice'",
    "fieldname": "supplier_dell_note",
    "fieldtype": "Data",
-   "label": "Supplier Delivery Note"
+   "label": "Supp.Del.Note (Optional)"
+  },
+  {
+   "fieldname": "item_group",
+   "fieldtype": "Link",
+   "label": "Item Group (Optional)",
+   "options": "Item Group"
+  },
+  {
+   "depends_on": "eval:doc.select_doctype == 'Serial No'",
+   "description": "<strong> *** Be sure to process the RETURN TO SUPPLIER FLOW before generate this Report***</strong><br>\n<br>\nFor Print Format <strong>DEAR GEMS SHOP SALES</strong> &amp; <strong>DEAR GEMS SHOP PAID SUPPLIER</strong><br>\n1.) Select Doctype: <strong>Serial No</strong> | Select Report Header &amp; Print Format <br> \n2.) Status (On Serial): <strong>Delivered</strong> or <strong>Blank</strong> for all Status<br>\n3.) Supplier: <strong>Select</strong> or <strong>Blank</strong> for all Supplier<br>\n4.) From Sale Date(On Serial): <strong>Start Date</strong> or <strong>Blank</strong> for all Start Date<br>\n5.) To Sale Date (On Serial): <strong>End Date</strong> or <strong>Blank</strong> for all End Date<br> \n**The Rest is <strong>Optional</strong> or Leave it <strong>Blank</strong>** <br>",
+   "fieldname": "display_serial_print_format_remarks",
+   "fieldtype": "Data",
+   "label": "REMARKS "
+  },
+  {
+   "fieldname": "report_gen_header",
+   "fieldtype": "Link",
+   "label": "Report Header",
+   "options": "Report Gen Header"
   }
  ],
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-11-26 13:12:47.211626",
+ "modified": "2022-12-01 12:02:02.508207",
  "modified_by": "Administrator",
  "module": "Report Generator",
  "name": "Report Generator",
